@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - NexGen Academy</title>
+    <style>
+        :root { --primary: #5a4a9c; --secondary: #b32d2e; --bg: #f4f4f9; }
+        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: var(--secondary); margin-bottom: 25px; }
+        .module { background: #fafafa; border: 1px solid #eee; padding: 15px; border-radius: 15px; margin-bottom: 20px; }
+        .module h3 { font-size: 1rem; margin-top: 0; color: var(--primary); border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        label { display: block; font-size: 0.85rem; font-weight: bold; margin: 10px 0 5px; color: #555; }
+        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 0.9rem; }
+        textarea { height: 80px; resize: none; }
+        button { width: 100%; padding: 13px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
+        button:active { transform: scale(0.98); background: #453780; }
+        .logout-btn { background: #888; margin-top: 20px; }
+        #login-screen { text-align: center; margin-top: 100px; }
+    </style>
+</head>
+<body>
+
+    <!-- 1. Security Login -->
+    <div id="login-screen" class="container">
+        <h2>NexGen Admin Access</h2>
+        <input type="password" id="adminPass" placeholder="গোপন পাসওয়ার্ড দিন">
+        <button onclick="checkLogin()">Login to Dashboard</button>
+    </div>
+
+    <!-- 2. Main Control Panel -->
+    <div id="main-panel" class="container" style="display:none;">
+        <h2>NexGen Controller</h2>
+
+        <!-- Live Class Module -->
+        <div class="module">
+            <h3>🔴 Live Class Manager</h3>
+            <label>Google Meet/Zoom Link:</label>
+            <input type="text" id="m_link" placeholder="Paste link here...">
+            <button onclick="save('liveLink', 'm_link')">Update Class Link</button>
+        </div>
+
+        <!-- Live Exam Module -->
+        <div class="module">
+            <h3>📝 Live Exam Setup</h3>
+            <label>Exam Name (Subject Code):</label>
+            <input type="text" id="e_name" placeholder="e.g. P-01 Daily MCQ">
+            <label>Answer Key (No spaces):</label>
+            <textarea id="e_key" placeholder="Example: 1A,2C,3B,4D,5A"></textarea>
+            <button onclick="saveExam()">Activate Exam Now</button>
+        </div>
+
+        <!-- Performance Module -->
+        <div class="module">
+            <h3>📊 Ranking & Results</h3>
+            <label>Paste Student Data:</label>
+            <textarea id="p_data" placeholder="Format: Samiul-95, Rakib-88..."></textarea>
+            <button onclick="save('rankData', 'p_data')">Update Leaderboard</button>
+        </div>
+
+        <!-- General Notice -->
+        <div class="module">
+            <h3>🔔 Notice Board</h3>
+            <label>Important Announcement:</label>
+            <textarea id="n_text" placeholder="আজকের বিশেষ নোটিশ..."></textarea>
+            <button onclick="save('notice', 'n_text')">Publish Notice</button>
+        </div>
+
+        <button class="logout-btn" onclick="location.reload()">Logout Admin</button>
+    </div>
+
+    <script>
+        // আপনার পার্সোনাল পাসওয়ার্ড: admin7788
+        function checkLogin() {
+            const p = document.getElementById('adminPass').value;
+            if(p === "admin7788") { 
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-panel').style.display = 'block';
+            } else { alert("ভুল পাসওয়ার্ড!"); }
+        }
+
+        function save(key, id) {
+            const val = document.getElementById(id).value;
+            if(!val) return alert("কিছু তো লিখুন!");
+            localStorage.setItem(key, val);
+            alert("Data Updated Successfully!");
+        }
+
+        function saveExam() {
+            const name = document.getElementById('e_name').value;
+            const key = document.getElementById('e_key').value;
+            if(!name || !key) return alert("Exam details missing!");
+            localStorage.setItem('examName', name);
+            localStorage.setItem('ansKey', key);
+            alert("Exam is now LIVE for students!");
+        }
+    </script>
+</body>
+</html>
