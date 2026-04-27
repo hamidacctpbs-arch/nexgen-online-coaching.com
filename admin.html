@@ -3,97 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - NexGen Academy</title>
+    <title>NexGen Admin | Auto-Control</title>
     <style>
-        :root { --primary: #5a4a9c; --secondary: #b32d2e; --bg: #f4f4f9; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; }
-        .container { max-width: 500px; margin: auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        h2 { text-align: center; color: var(--secondary); margin-bottom: 25px; }
-        .module { background: #fafafa; border: 1px solid #eee; padding: 15px; border-radius: 15px; margin-bottom: 20px; }
-        .module h3 { font-size: 1rem; margin-top: 0; color: var(--primary); border-bottom: 1px solid #eee; padding-bottom: 5px; }
-        label { display: block; font-size: 0.85rem; font-weight: bold; margin: 10px 0 5px; color: #555; }
-        input, textarea, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 0.9rem; }
-        textarea { height: 80px; resize: none; }
-        button { width: 100%; padding: 13px; background: var(--primary); color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 10px; transition: 0.3s; }
-        button:active { transform: scale(0.98); background: #453780; }
-        .logout-btn { background: #888; margin-top: 20px; }
-        #login-screen { text-align: center; margin-top: 100px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 20px; }
+        .box { max-width: 450px; margin: auto; background: white; padding: 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h2 { color: #b32d2e; text-align: center; }
+        .section { margin-top: 20px; padding: 15px; border-radius: 12px; background: #fafafa; border: 1px solid #eee; }
+        label { font-weight: bold; display: block; margin-bottom: 8px; color: #5a4a9c; }
+        input, textarea { width: 100%; padding: 12px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #ddd; box-sizing: border-box; }
+        button { width: 100%; padding: 12px; background: #5a4a9c; color: white; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        .danger-btn { background: #e74c3c; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-    <!-- 1. Security Login -->
-    <div id="login-screen" class="container">
-        <h2>NexGen Admin Access</h2>
-        <input type="password" id="adminPass" placeholder="গোপন পাসওয়ার্ড দিন">
-        <button onclick="checkLogin()">Login to Dashboard</button>
+    <div id="login" class="box">
+        <h2>Admin Access</h2>
+        <input type="password" id="pass" placeholder="পাসওয়ার্ড দিন (admin7788)">
+        <button onclick="check()">Login</button>
     </div>
 
-    <!-- 2. Main Control Panel -->
-    <div id="main-panel" class="container" style="display:none;">
-        <h2>NexGen Controller</h2>
+    <div id="panel" class="box" style="display:none;">
+        <h2>NexGen Auto-Admin</h2>
+        <hr>
 
-        <!-- Live Class Module -->
-        <div class="module">
-            <h3>🔴 Live Class Manager</h3>
-            <label>Google Meet/Zoom Link:</label>
-            <input type="text" id="m_link" placeholder="Paste link here...">
-            <button onclick="save('liveLink', 'm_link')">Update Class Link</button>
+        <!-- ১. লাইভ ক্লাস লিঙ্ক -->
+        <div class="section">
+            <label>🔴 Live Class Link</label>
+            <input type="text" id="link" placeholder="Google Meet Link">
+            <button onclick="save('liveLink', 'link')">Update Link</button>
         </div>
 
-        <!-- Live Exam Module -->
-        <div class="module">
-            <h3>📝 Live Exam Setup</h3>
-            <label>Exam Name (Subject Code):</label>
-            <input type="text" id="e_name" placeholder="e.g. P-01 Daily MCQ">
-            <label>Answer Key (No spaces):</label>
-            <textarea id="e_key" placeholder="Example: 1A,2C,3B,4D,5A"></textarea>
-            <button onclick="saveExam()">Activate Exam Now</button>
+        <!-- ২. অটো এক্সাম সেটআপ -->
+        <div class="section">
+            <label>📝 Exam Name</label>
+            <input type="text" id="eName" placeholder="e.g. Physics Daily Exam 01">
+            
+            <label>✅ Answer Key (Automation)</label>
+            <textarea id="eKey" placeholder="কমা দিয়ে উত্তর লিখুন: A,C,B,D,A"></textarea>
+            <small style="color: #888;">*মেশিন এই উত্তরগুলো দেখে খাতা চেক করবে।</small>
+            <button onclick="saveExam()" style="margin-top:10px;">Activate Auto-Exam</button>
         </div>
 
-        <!-- Performance Module -->
-        <div class="module">
-            <h3>📊 Ranking & Results</h3>
-            <label>Paste Student Data:</label>
-            <textarea id="p_data" placeholder="Format: Samiul-95, Rakib-88..."></textarea>
-            <button onclick="save('rankData', 'p_data')">Update Leaderboard</button>
+        <!-- ৩. র‍্যাঙ্কিং রিসেট (নতুন পরীক্ষার জন্য) -->
+        <div class="section">
+            <label>📊 Leaderboard Control</label>
+            <button class="danger-btn" onclick="clearResults()">Reset All Rankings</button>
         </div>
 
-        <!-- General Notice -->
-        <div class="module">
-            <h3>🔔 Notice Board</h3>
-            <label>Important Announcement:</label>
-            <textarea id="n_text" placeholder="আজকের বিশেষ নোটিশ..."></textarea>
-            <button onclick="save('notice', 'n_text')">Publish Notice</button>
-        </div>
-
-        <button class="logout-btn" onclick="location.reload()">Logout Admin</button>
+        <button style="background:#777; margin-top:20px;" onclick="location.reload()">Logout</button>
     </div>
 
     <script>
-        // আপনার পার্সোনাল পাসওয়ার্ড: admin7788
-        function checkLogin() {
-            const p = document.getElementById('adminPass').value;
-            if(p === "admin7788") { 
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-panel').style.display = 'block';
+        function check() {
+            if(document.getElementById('pass').value === "admin7788") {
+                document.getElementById('login').style.display = 'none';
+                document.getElementById('panel').style.display = 'block';
             } else { alert("ভুল পাসওয়ার্ড!"); }
         }
 
         function save(key, id) {
-            const val = document.getElementById(id).value;
-            if(!val) return alert("কিছু তো লিখুন!");
-            localStorage.setItem(key, val);
-            alert("Data Updated Successfully!");
+            localStorage.setItem(key, document.getElementById(id).value);
+            alert("Updated!");
         }
 
         function saveExam() {
-            const name = document.getElementById('e_name').value;
-            const key = document.getElementById('e_key').value;
-            if(!name || !key) return alert("Exam details missing!");
+            const name = document.getElementById('eName').value;
+            const key = document.getElementById('eKey').value.toUpperCase();
             localStorage.setItem('examName', name);
-            localStorage.setItem('ansKey', key);
-            alert("Exam is now LIVE for students!");
+            localStorage.setItem('ansKey', key); // এই কি-টিই index.html এর মেশিন রিড করবে
+            alert("Auto-Exam Activated!");
+        }
+
+        function clearResults() {
+            if(confirm("আপনি কি সব স্টুডেন্টের র‍্যাঙ্কিং মুছে ফেলতে চান?")) {
+                localStorage.removeItem('allResults');
+                alert("Rankings Cleared!");
+            }
         }
     </script>
 </body>
