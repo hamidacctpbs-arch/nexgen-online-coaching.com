@@ -3,45 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NexGen Coaching Academy</title>
+    <title>NexGen Academy | Student Dashboard</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f4f7f6; color: #333; }
-        header { background: linear-gradient(135deg, #6e8efb, #a777e3); color: white; padding: 60px 20px; text-align: center; }
-        header h1 { margin: 0; font-size: 2.5rem; letter-spacing: 2px; }
-        header p { font-size: 1.2rem; opacity: 0.9; }
-        .container { padding: 40px 20px; max-width: 800px; margin: auto; text-align: center; }
-        .btn { background: #ff4757; color: white; padding: 15px 30px; text-decoration: none; border-radius: 30px; font-weight: bold; display: inline-block; margin-top: 20px; transition: 0.3s; }
-        .btn:hover { background: #ff6b81; transform: scale(1.05); }
-        .courses { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 40px; }
-        .course-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); width: 250px; }
-        footer { background: #333; color: white; text-align: center; padding: 20px; position: relative; bottom: 0; width: 100%; }
+        /* CSS Section */
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { margin: 0; font-family: 'Segoe UI', Roboto, sans-serif; background-color: #f3effa; color: #333; overflow-x: hidden; }
+
+        /* Fixed Top Header */
+        .top-header { position: fixed; top: 0; width: 100%; background: #fff; display: flex; justify-content: space-between; align-items: center; padding: 10px 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); z-index: 1000; }
+        .brand { display: flex; align-items: center; }
+        .logo-box { width: 32px; height: 32px; background: #b32d2e; border-radius: 8px; margin-right: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 0.9rem; }
+        .brand-name { color: #b32d2e; font-weight: bold; font-size: 1.1rem; }
+
+        /* Main Dashboard Grid */
+        .container { padding: 75px 12px 100px; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; animation: fadeIn 0.4s ease; }
+        .screen { display: none; min-height: 100vh; background: #fff; padding: 80px 20px 100px; text-align: center; }
+        .active-screen { display: grid; } /* For home dashboard */
+        .active-block { display: block; } /* For other screens */
+
+        /* Feature Card Style */
+        .card { background: #fff; border-radius: 12px; padding: 18px 12px; display: flex; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.03); transition: 0.2s; cursor: pointer; border: 1px solid #f0f0f0; }
+        .card:active { transform: scale(0.96); background: #f9f9f9; }
+        .icon-area { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; margin-right: 10px; font-size: 1.3rem; }
+        .card-text { font-size: 0.85rem; font-weight: 600; color: #444; }
+
+        /* Table & UI Elements */
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        th, td { padding: 12px; text-align: center; border-bottom: 1px solid #eee; }
+        th { background: #5a4a9c; color: white; font-size: 0.9rem; }
+        
+        .qa-input { width: 100%; height: 120px; border-radius: 12px; border: 1px solid #ddd; padding: 15px; margin: 15px 0; font-family: inherit; resize: none; background: #f9f9f9; }
+        .btn { width: 100%; padding: 14px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; margin-bottom: 10px; transition: 0.3s; }
+        .btn-primary { background: #5a4a9c; color: white; }
+        .btn-exam { background: #27ae60; color: white; margin-top: 15px; }
+
+        /* Bottom Nav */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: #fff; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #eee; z-index: 1000; }
+        .nav-item { text-align: center; color: #999; font-size: 0.7rem; flex: 1; cursor: pointer; font-weight: 500; }
+        .nav-item.active { color: #5a4a9c; font-weight: bold; }
+        .nav-item i { font-size: 1.5rem; display: block; margin-bottom: 3px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>NexGen Coaching Academy</h1>
-    <p>আগামী প্রজন্মের জন্য আধুনিক অনলাইন লার্নিং প্ল্যাটফর্ম</p>
-</header>
-
-<div class="container">
-    <h2>আমাদের কোর্সসমূহ</h2>
-    <div class="courses">
-        <div class="course-card">
-            <h3>Skill Development</h3>
-            <p>নতুন দক্ষতা শিখুন আধুনিক পদ্ধতিতে।</p>
+    <!-- Top Header -->
+    <div class="top-header">
+        <div class="brand">
+            <div class="logo-box">NG</div>
+            <span class="brand-name">NexGen Academy</span>
         </div>
-        <div class="course-card">
-            <h3>Academic Excellence</h3>
-            <p>পরীক্ষায় সেরা ফলাফলের পূর্ণাঙ্গ গাইডলাইন।</p>
+        <div style="font-size: 1.2rem; color: #8a7fb9;">🔔 👤</div>
+    </div>
+
+    <!-- 1. Home Dashboard Screen -->
+    <div id="home-screen" class="container screen active-screen">
+        <div class="card" onclick="runLiveClass()"><div class="icon-area">📺</div><span class="card-text">Live Class</span></div>
+        <div class="card" onclick="startAutoExam()"><div class="icon-area">✍️</div><span class="card-text">Live Exam</span></div>
+        <div class="card" onclick="alert('Past Classes coming soon')"><div class="icon-area">📂</div><span class="card-text">Past Class</span></div>
+        <div class="card" onclick="alert('Past Exams coming soon')"><div class="icon-area">📜</div><span class="card-text">Past Exam</span></div>
+        <div class="card" onclick="showRanking()"><div class="icon-area">📊</div><span class="card-text">Performance</span></div>
+        <div class="card"><div class="icon-area">📖</div><span class="card-text">Course Details</span></div>
+        <div class="card"><div class="icon-area">🧬</div><span class="card-text">Foundation</span></div>
+        <div class="card" onclick="showTab('qa-screen', 'qa-nav')"><div class="icon-area">💬</div><span class="card-text">Q&A Service</span></div>
+        <div class="card" style="background:#fffcf0"><div class="icon-area">👑</div><span class="card-text">Master Class</span></div>
+        <div class="card"><div class="icon-area">➕</div><span class="card-text">Add Course</span></div>
+    </div>
+
+    <!-- 2. Live Exam Screen -->
+    <div id="exam-screen" class="screen">
+        <h3 id="display-exam-name" style="color:#b32d2e">Exam Loading...</h3>
+        <div id="exam-questions-area" style="text-align: left; margin: 20px 0;"></div>
+        <button class="btn btn-exam" onclick="processAutoGrading()">Submit Exam</button>
+    </div>
+
+    <!-- 3. Performance/Ranking Screen -->
+    <div id="ranking-screen" class="screen">
+        <h3 style="color:#5a4a9c">🏆 Live Leaderboard</h3>
+        <p style="font-size: 0.8rem; color:#888;">মার্কস অনুযায়ী অটো র‍্যাঙ্কিং</p>
+        <div id="ranking-table-area"></div>
+        <button class="btn" style="background:#eee; margin-top:20px;" onclick="location.reload()">Back to Home</button>
+    </div>
+
+    <!-- 4. Q&A Screen -->
+    <div id="qa-screen" class="screen">
+        <h3 style="color:#5a4a9c">Smart Q&A</h3>
+        <textarea id="qa-input" class="qa-input" placeholder="আপনার প্রশ্নটি এখানে লিখুন..."></textarea>
+        <button class="btn btn-primary" onclick="alert('AI Response Pending...')">Ask AI (Instant)</button>
+        <button class="btn" style="background:#25d366; color:white;" onclick="window.open('https://wa.me')">Teacher (WhatsApp)</button>
+    </div>
+
+    <!-- 5. Account Screen -->
+    <div id="acc-screen" class="screen">
+        <div style="background:#f9f9f9; padding:30px; border-radius:20px;">
+            <div style="width:70px; height:70px; background:#ddd; border-radius:50%; margin:0 auto 15px; display:flex; align-items:center; justify-content:center; font-size:1.5rem;">👤</div>
+            <h3>Student Profile</h3>
+            <p>ID: NG-7788</p>
         </div>
     </div>
-    <a href="#" class="btn">ভর্তি হতে ক্লিক করুন</a>
-</div>
 
-<footer>
-    <p>&copy; 2024 NexGen Coaching Academy | Built with ❤️ on GitHub</p>
-</footer>
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div id="home-nav" class="nav-item active" onclick="location.reload()"><i>🏠</i>Home</div>
+        <div class="nav-item"><i>📥</i>Downloads</div>
+        <div id="qa-nav" class="nav-item" onclick="showTab('qa-screen', 'qa-nav')"><i>💬</i>Q&A</div>
+        <div id="acc-nav" class="nav-item" onclick="showTab('acc-screen', 'acc-nav')"><i>👤</i>Account</div>
+    </nav>
 
+    <script>
+        /* JavaScript Section - Engineering Logic */
+
+        // 1. Navigation Logic
+        function showTab(screenId, navId) {
+            document.querySelectorAll('.screen').forEach(s => s.style.display = 'none');
+            const target = document.getElementById(screenId);
+            target.style.display = 'block';
+            
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if(navId) document.getElementById(navId).classList.add('active');
+        }
+
+        // 2. Live Class Logic
+        function runLiveClass() {
+            const link = localStorage.getItem('liveLink');
+            if(link) window.open(link, '_blank');
+            else alert("বর্তমানে কোনো লাইভ ক্লাস নেই।");
+        }
+
+        // 3. Automated Exam Engine
+        function startAutoExam() {
+            const key = localStorage.getItem('ansKey');
+            const name = localStorage.getItem('examName') || "Daily MCQ";
+            if(!key) return alert("বর্তমানে কোনো পরীক্ষা নেই!");
+
+            showTab('exam-screen');
+            document.getElementById('display-exam-name').innerText = name;
+
+            const answersArray = key.split(',');
+            let html = "";
+            answersArray.forEach((_, i) => {
+                html += `<div style="margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:8px;">
+                            <b>Q${i+1}:</b> &nbsp; 
+                            <input type="text" id="ans${i+1}" placeholder="A/B/C/D" maxlength="1" 
+                            style="width:60px; text-align:center; padding:5px; border-radius:5px; border:1px solid #ccc; text-transform: uppercase;">
+                         </div>`;
+            });
+            document.getElementById('exam-questions-area').innerHTML = html;
+        }
+
+        function processAutoGrading() {
+            const keyStr = localStorage.getItem('ansKey');
+            const key = keyStr.split(',').map(s => s.trim().toUpperCase());
+            let score = 0;
+            let studentName = prompt("র‍্যাঙ্কিংয়ের জন্য আপনার নাম লিখুন:");
+            if(!studentName) return;
+
+            key.forEach((correctValue, i) => {
+                let studentInput = document.getElementById(`ans${i+1}`).value.toUpperCase();
+                if(studentInput === correctValue) score++;
+            });
+
+            // Auto-Save Result to Rankings
+            let allResults = JSON.parse(localStorage.getItem('allResults')) || [];
+            allResults.push({ name: studentName, mark: score, date: new Date().toLocaleDateString() });
+            localStorage.setItem('allResults', JSON.stringify(allResults));
+
+            alert(`পরীক্ষা শেষ! আপনার স্কোর: ${score}/${key.length}`);
+            location.reload();
+        }
+
+        // 4. Auto-Ranking Engine (Sorting Logic)
+        function showRanking() {
+            showTab('ranking-screen');
+            let results = JSON.parse(localStorage.getItem('allResults')) || [];
+            
+            // CSE Engineering Sort (High to Low)
+            results.sort((a, b) => b.mark - a.mark);
+
+            let tableHtml = "<table><tr><th>Rank</th><th>Name</th><th>Mark</th></tr>";
+            if(results.length === 0) {
+                tableHtml += "<tr><td colspan='3'>এখনো কোনো রেজাল্ট নেই</td></tr>";
+            } else {
+                results.forEach((item, index) => {
+                    tableHtml += `<tr>
+                                    <td style="font-weight:bold; color:#5a4a9c;">#${index+1}</td>
+                                    <td>${item.name}</td>
+                                    <td>${item.mark}</td>
+                                  </tr>`;
+                });
+            }
+            tableHtml += "</table>";
+            document.getElementById('ranking-table-area').innerHTML = tableHtml;
+        }
+    </script>
 </body>
 </html>
